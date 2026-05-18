@@ -1,0 +1,8 @@
+terraform/
+.terraform/
+.git/
+.idea/
+*.md
+monitoring/
+ci-cd/
+kubernetes/

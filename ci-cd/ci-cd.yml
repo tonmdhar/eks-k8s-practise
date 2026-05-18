@@ -1,0 +1,7 @@
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to K8s
+        run: |
+          kubectl apply -f kubernetes/base/  # ❌ No context/set KUBECONFIG!
