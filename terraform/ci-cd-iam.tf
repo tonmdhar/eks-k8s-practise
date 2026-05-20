@@ -12,9 +12,28 @@ resource "aws_iam_user_policy_attachment" "github_ecr" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
 
+resource "aws_iam_policy" "github_eks_access" {
+  name = "GitHubActionsEKSAccess"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster",
+          "eks:ListClusters",
+          "eks:AccessKubernetesApi"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_user_policy_attachment" "github_eks" {
   user       = aws_iam_user.github_actions.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  policy_arn = aws_iam_policy.github_eks_access.arn
 }
 
 resource "aws_iam_access_key" "github_actions" {
